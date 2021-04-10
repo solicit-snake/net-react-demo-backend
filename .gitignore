@@ -1,3 +1,10 @@
-
 obj/*
 .vs/*
+bin/*
+obj\*
+obj/*
+obj/Debug/net5.0/net-react-demo-backend.assets.cache
+obj/Debug/net5.0/net-react-demo-backend.csprojAssemblyReference.cache
+obj/net-react-demo-backend.csproj.nuget.dgspec.json
+obj/project.assets.json
+obj/project.nuget.cache
