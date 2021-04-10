@@ -1,11 +1,16 @@
 {
   "version": 2,
-  "dgSpecHash": "uBujZtYElQQ+a9tNPuBT1pF3VeiGCXP5henaxvALkWOz4T1xixjegpXNvMHlSHYogUv/OYks74dIBblj5MYtlw==",
+  "dgSpecHash": "TtWKAX3tkgDaryEyTs0/iHMCgaDEVH5+N3peCq3IQuMWi6gCY5eb61uixWCb7hVtM0mqSuzJQKJVt/7kQfOlmw==",
   "success": true,
   "projectFilePath": "C:\\Users\\Kyle\\Desktop\\Personal\\Projects\\Web\\Demo_Net_React\\net-react-demo-backend\\net-react-demo-backend.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Kyle\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\5.0.5\\microsoft.aspnetcore.jsonpatch.5.0.5.nupkg.sha512",
+    "C:\\Users\\Kyle\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\5.0.5\\microsoft.aspnetcore.mvc.newtonsoftjson.5.0.5.nupkg.sha512",
+    "C:\\Users\\Kyle\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\Kyle\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
     "C:\\Users\\Kyle\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\Kyle\\.nuget\\packages\\newtonsoft.json\\12.0.2\\newtonsoft.json.12.0.2.nupkg.sha512",
+    "C:\\Users\\Kyle\\.nuget\\packages\\newtonsoft.json.bson\\1.0.2\\newtonsoft.json.bson.1.0.2.nupkg.sha512",
     "C:\\Users\\Kyle\\.nuget\\packages\\swashbuckle.aspnetcore\\5.6.3\\swashbuckle.aspnetcore.5.6.3.nupkg.sha512",
     "C:\\Users\\Kyle\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\5.6.3\\swashbuckle.aspnetcore.swagger.5.6.3.nupkg.sha512",
     "C:\\Users\\Kyle\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\5.6.3\\swashbuckle.aspnetcore.swaggergen.5.6.3.nupkg.sha512",
