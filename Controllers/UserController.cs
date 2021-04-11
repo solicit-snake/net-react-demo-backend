@@ -27,7 +27,7 @@ namespace net_react_demo_backend.Controllers
             _dbConnector = new DbConnector(_configuration, connectionStringName);
         }
 
-        [HttpGet("get-by-id/{userId}")]
+        [HttpGet("get-by-user-id/{userId}")]
         public JsonResult GetById(string userId)
         {   
             //Query to be executed
@@ -49,7 +49,7 @@ namespace net_react_demo_backend.Controllers
             return (_dbConnector.runQuery());
         }
 
-        [HttpPost]
+        [HttpPost("post")]
         public JsonResult Post(User user)
         {
             //TODO: need to potentially b-crypt this password either before it's sent here, or even right here (probs before)
@@ -61,7 +61,7 @@ namespace net_react_demo_backend.Controllers
             return (_dbConnector.runQuery());
         }
 
-        [HttpPut]
+        [HttpPut("put")]
         public JsonResult Put(User user)
         {
             //TODO: need to potentially b-crypt this password either before it's sent here, or even right here (probs before)
@@ -75,7 +75,7 @@ namespace net_react_demo_backend.Controllers
             return (_dbConnector.runQuery());
         }
 
-        [HttpDelete("{userId}")]
+        [HttpDelete("delete-by-user-id/{userId}")]
         public JsonResult Delete(int userId)
         {
             //Query to be executed
