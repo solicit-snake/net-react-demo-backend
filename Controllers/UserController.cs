@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using System.Data.SqlClient;
 using System.Data;
 using net_react_demo_backend.Models;
+using net_react_demo_backend.Services;
 
 namespace net_react_demo_backend.Controllers
 {
@@ -16,10 +17,14 @@ namespace net_react_demo_backend.Controllers
     public class UserController : ControllerBase
     {
         private readonly IConfiguration _configuration;
+        private DbConnector _dbConnector;
+        //TODO: This can potentially be added to the .env file.
+        private string connectionStringName = "NetReactDemoCon";
 
         public UserController(IConfiguration configuration)
         {
             _configuration = configuration;
+            _dbConnector = new DbConnector(_configuration, connectionStringName);
         }
 
         [HttpGet("get-by-id/{userId}")]
@@ -29,24 +34,8 @@ namespace net_react_demo_backend.Controllers
             string query = @"
                 select UserId, FirstName, LastName, Email, Phone, Password from dbo.Users where UserId = " + userId + @"";
 
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("NetReactDemoCon");
-            SqlDataReader myReader;
-            using(SqlConnection myCon=new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                //Running the query here
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myReader = myCommand.ExecuteReader();
-
-                    table.Load(myReader);
-
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
-            return new JsonResult(table);
+            _dbConnector.setQuery(query);
+            return (_dbConnector.runQuery());
         }
 
         [HttpGet("get-by-email/{userEmail}")]
@@ -56,24 +45,8 @@ namespace net_react_demo_backend.Controllers
             string query = @"
                 select UserId, FirstName, LastName, Email, Phone, Password from dbo.Users where Email = '" + userEmail + @"'";
 
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("NetReactDemoCon");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                //Running the query here
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myReader = myCommand.ExecuteReader();
-
-                    table.Load(myReader);
-
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
-            return new JsonResult(table);
+            _dbConnector.setQuery(query);
+            return (_dbConnector.runQuery());
         }
 
         [HttpPost]
@@ -83,24 +56,9 @@ namespace net_react_demo_backend.Controllers
             //Query to be executed
             string query = @"
                 insert into dbo.Users values ('"+user.FirstName+ @"', '" + user.LastName + @"', '" + user.Email + @"', '" + user.Phone + @"', '" + user.Password + @"')";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("NetReactDemoCon");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                //Running the query here
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myReader = myCommand.ExecuteReader();
-
-                    table.Load(myReader);
-
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
-            return new JsonResult("Added Successfully");
+            
+            _dbConnector.setQuery(query);
+            return (_dbConnector.runQuery());
         }
 
         [HttpPut]
@@ -113,24 +71,8 @@ namespace net_react_demo_backend.Controllers
                 FirstName = '" + user.FirstName + @"', LastName = '" + user.LastName + @"',
                 Email = '" + user.Email + @"', Phone ='" + user.Phone + @"', Password ='" + user.Password + @"'
                 where UserID = "+ user.UserId +@"";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("NetReactDemoCon");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                //Running the query here
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myReader = myCommand.ExecuteReader();
-
-                    table.Load(myReader);
-
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
-            return new JsonResult(user.FirstName+" Was Updated Successfully");
+            _dbConnector.setQuery(query);
+            return (_dbConnector.runQuery());
         }
 
         [HttpDelete("{userId}")]
@@ -140,24 +82,9 @@ namespace net_react_demo_backend.Controllers
             string query = @"
                 delete from dbo.Users 
                 where UserId = "+ userId +@"";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("NetReactDemoCon");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                //Running the query here
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myReader = myCommand.ExecuteReader();
 
-                    table.Load(myReader);
-
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
-            return new JsonResult("Deleted Sucessfully");
+            _dbConnector.setQuery(query);
+            return (_dbConnector.runQuery());
         }
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using System.Data.SqlClient;
 using System.Data;
 using net_react_demo_backend.Models;
+using net_react_demo_backend.Services;
 
 namespace net_react_demo_backend.Controllers
 {
@@ -16,9 +17,13 @@ namespace net_react_demo_backend.Controllers
     public class AddressController : ControllerBase
     {
         private readonly IConfiguration _configuration;
+        private DbConnector _dbConnector;
+        //TODO: This can potentially be added to the .env file.
+        private string connectionStringName = "NetReactDemoCon";
         public AddressController(IConfiguration configuration)
         {
             _configuration = configuration;
+            _dbConnector = new DbConnector(_configuration, connectionStringName);
         }
 
         [HttpGet ("get-by-address-id/{addressId}")]
@@ -28,24 +33,21 @@ namespace net_react_demo_backend.Controllers
             select UserId, Street, Suburb, State, Postcode, Country
             from dbo.Addresses where AddressId = " + addressId;
 
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("NetReactDemoCon");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                //Running the query here
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myReader = myCommand.ExecuteReader();
-
-                    table.Load(myReader);
-
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
-            return new JsonResult(table);
+            _dbConnector.setQuery(query);
+            return (_dbConnector.runQuery());
         }
+
+        [HttpGet("get-by-user-id/{userId}")]
+        public JsonResult GetByUserId(string userId)
+        {
+            string query = @"
+            select AddressId, UserId, Street, Suburb, State, Postcode, Country
+            from dbo.Addresses where UserId = " + userId;
+
+            _dbConnector.setQuery(query);
+            return (_dbConnector.runQuery());
+        }
+
+        //TODO: rest of address methods.
     }
 }
