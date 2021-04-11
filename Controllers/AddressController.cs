@@ -15,6 +15,37 @@ namespace net_react_demo_backend.Controllers
     [ApiController]
     public class AddressController : ControllerBase
     {
+        private readonly IConfiguration _configuration;
+        public AddressController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
 
+        [HttpGet ("get-by-address-id/{addressId}")]
+        public JsonResult GetByAddressId(string addressId)
+        {
+            string query = @"
+            select UserId, Street, Suburb, State, Postcode, Country
+            from dbo.Addresses where AddressId = " + addressId;
+
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("NetReactDemoCon");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                //Running the query here
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myReader = myCommand.ExecuteReader();
+
+                    table.Load(myReader);
+
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult(table);
+        }
     }
 }

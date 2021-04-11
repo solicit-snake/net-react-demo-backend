@@ -22,28 +22,44 @@ namespace net_react_demo_backend.Controllers
             _configuration = configuration;
         }
 
-        [HttpGet("{userIdentifier}")]
-        public JsonResult Get(string userIdentifier)
-        {
-            string query = @"";
-            
-            //If using email to get user
-            if (userIdentifier.Contains("@")) {
-                //Query to be executed
-                query = @"
-                select UserId, FirstName, LastName, Email, Phone, Password from dbo.Users where Email = '"+ userIdentifier +@"'";
-            }
-            //If using anything else to get user (usually ID)
-            else {
-                //Query to be executed
-                query = @"
-                select UserId, FirstName, LastName, Email, Phone, Password from dbo.Users where UserId = " + userIdentifier + @"";
-            }
-            
+        [HttpGet("get-by-id/{userId}")]
+        public JsonResult GetById(string userId)
+        {   
+            //Query to be executed
+            string query = @"
+                select UserId, FirstName, LastName, Email, Phone, Password from dbo.Users where UserId = " + userId + @"";
+
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("NetReactDemoCon");
             SqlDataReader myReader;
             using(SqlConnection myCon=new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                //Running the query here
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myReader = myCommand.ExecuteReader();
+
+                    table.Load(myReader);
+
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult(table);
+        }
+
+        [HttpGet("get-by-email/{userEmail}")]
+        public JsonResult GetByEmail(string userEmail)
+        {
+            //Query to be executed
+            string query = @"
+                select UserId, FirstName, LastName, Email, Phone, Password from dbo.Users where Email = '" + userEmail + @"'";
+
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("NetReactDemoCon");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
                 myCon.Open();
                 //Running the query here
