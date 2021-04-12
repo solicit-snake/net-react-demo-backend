@@ -55,7 +55,7 @@ namespace net_react_demo_backend.Controllers
             //TODO: need to potentially b-crypt this password either before it's sent here, or even right here (probs before)
             //Query to be executed
             string query = @"
-                insert into dbo.Users values ('"+user.FirstName+ @"', '" + user.LastName + @"', '" + user.Email + @"', '" + user.Phone + @"', '" + user.Password + @"')";
+                insert into dbo.Users values ('"+user.FirstName+ @"', '" + user.LastName + @"', '" + user.Email + @"', '" + user.Phone + @"', '" + user.Password + "')";
             
             _dbConnector.setQuery(query);
             return (_dbConnector.runQuery());
